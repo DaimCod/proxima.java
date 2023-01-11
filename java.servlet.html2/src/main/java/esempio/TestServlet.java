@@ -32,9 +32,7 @@ public class TestServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-//		response.getWriter().append("Daim Served at: ").append(request.getContextPath());
-		
+
 		//Verifico input ricevuto da front end
 		String userName = request.getParameter("userName"); //deve coincidere con il nome dei parametri in html
 		String textMessage = request.getParameter("textMessage");
@@ -43,21 +41,29 @@ public class TestServlet extends HttpServlet {
 		System.out.println("userName: " + userName);
 		System.out.println("textMessage: " + textMessage);
 		
-		response.getWriter().append("Ho ricevuto correttamente i dati\n");
+		response.getWriter().append("<html><body>Ho ricevuto correttamente i dati<br>");
+		
+		String finalResult = "";
 		
 		try {
-			int result = insertIntoDB(userName, textMessage, ldt);
+			int result = DatabaseManagementSingleton.getIstance()
+													.insertIntoDB(userName, textMessage, ldt);
 			if(result != 0) {
-				response.getWriter().append("Inserimento dati nel DB completato\n");
+				finalResult += "Inserimento dati nel DB completato<br>";
+				finalResult += DatabaseManagementSingleton.getIstance()
+														  .retriveFromServer();
 			}
 			else {
-				response.getWriter().append("inserimento dati nel DB fallito\n");
+				finalResult += "inserimento dati nel DB fallito<br>";
 			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
+		finalResult += "</body></html>";
+		
+		response.getWriter().append(finalResult);
 	}
 
 	/**
@@ -66,27 +72,6 @@ public class TestServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		doGet(request, response);
-	}
-	
-	private int insertIntoDB(String username, String textMessage, String ldt) throws Exception{
-
-		String driver = "org.mariadb.jdbc.Driver";
-		Class.forName(driver);
-		
-		String url = "jdbc:mariadb://centauri.proximainformatica.com:193/academyfs07";
-		
-		Connection con = DriverManager.getConnection(url, "acfs07", "acfs07");
-		
-		Statement cmd = con.createStatement();
-		String query = "INSERT INTO messages(userName, textMessage, userInsertedTime ,serverReceivedTime) values"
-				+ "('" + username + "'," 
-				+ "'" + textMessage + "',"
-				+ "'" + ldt + "'," 
-				+ "'" + ldt + "');";
-		
-		int rowsUpdated = cmd.executeUpdate(query);
-		
-		return rowsUpdated;
 	}
 
 }
