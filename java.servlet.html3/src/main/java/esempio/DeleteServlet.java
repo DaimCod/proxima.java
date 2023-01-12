@@ -27,26 +27,16 @@ public class DeleteServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		 //deve coincidere con il nome dei parametri in html
-		
+		String id = request.getParameter("id");
 		response.getWriter().append("<html><body><h2>Scegliere l'id tra queste opzioni</h2><br>");
 				
 		
 		String finalResult = "";
 		
-		try {
-			response.getWriter().append(DatabaseManagementSingleton.getIstance()
-			   						   .retriveFromDB());
-			response.getWriter().append( 
-					 "		<form>"
-					+ "			  <label>ID da cancellare: </label>"
-					+ "			  <input type=\"text\" name=\"id\"><br><br>"
-					+ "			  <input type=\"submit\" value=\"Cancella ora\">"
-					+ "		</form>");
-			String id = request.getParameter("id");
+		try {	
 			DatabaseManagementSingleton.getIstance()
 									   .deleteFromDB(id);
-			
-			
+	
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
