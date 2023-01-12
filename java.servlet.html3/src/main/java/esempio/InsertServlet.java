@@ -1,30 +1,24 @@
 package esempio;
 
-import java.io.IOException;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.Statement;
-import java.time.LocalDateTime;
-import java.util.logging.Logger;
-
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 /**
- * Servlet implementation class TestServlet
+ * Servlet implementation class InsertServlet
  */
-@WebServlet("/MessagesList")
-public class TestServlet extends HttpServlet {
+@WebServlet("/Insert")
+public class InsertServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-
+       
     /**
-     * Default constructor. 
+     * @see HttpServlet#HttpServlet()
      */
-    public TestServlet() {
+    public InsertServlet() {
+        super();
         // TODO Auto-generated constructor stub
     }
 
@@ -32,34 +26,35 @@ public class TestServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
-		//Verifico input ricevuto da front end
-		String userName = request.getParameter("userName"); //deve coincidere con il nome dei parametri in html
-		String textMessage = request.getParameter("textMessage");
-		String ldt = request.getParameter("datetime");
-		
-		System.out.println("userName: " + userName);
-		System.out.println("textMessage: " + textMessage);
+		// TODO Auto-generated method stub
+		String email = request.getParameter("email"); //deve coincidere con il nome dei parametri in html
+		String firstName = request.getParameter("firstName");
+		String lastName = request.getParameter("lastName");
+		String birthday = request.getParameter("birthday");
+		String imgpath = request.getParameter("imgpath");
+		String role = request.getParameter("role");
+		String hrnote = request.getParameter("hrnote");
+		String technicalnote = request.getParameter("technicalnote");
+		String enabled = request.getParameter("enabled");
 		
 		response.getWriter().append("<html><body>Ho ricevuto correttamente i dati<br>");
 		
 		String finalResult = "";
 		
 		try {
+			
 			int result = DatabaseManagementSingleton.getIstance()
-													.insertIntoDB(userName, textMessage, ldt);
-			if(result != 0) {
-				finalResult += "Inserimento dati nel DB completato<br>";
-				finalResult += DatabaseManagementSingleton.getIstance()
-														  .retriveFromServer();
-			}
-			else {
-				finalResult += "inserimento dati nel DB fallito<br>";
-			}
+									.insertIntoDB(email, firstName, lastName, birthday, imgpath,role,hrnote,technicalnote,enabled);
+			
+			response.getWriter().append("Ho ricevuto correttamente i dati<br>");
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+		
+		
+		response.getWriter().append("<a href=\"./List\"> Clicca qui per visualizzare </a>");
 		
 		finalResult += "</body></html>";
 		
