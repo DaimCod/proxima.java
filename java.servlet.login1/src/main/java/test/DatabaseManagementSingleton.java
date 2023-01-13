@@ -20,6 +20,28 @@ public class DatabaseManagementSingleton {
 		return instance;
 	}
 	
+	public boolean login(String email, String password) throws Exception{
+
+		boolean login = false;
+		String driver = "org.mariadb.jdbc.Driver";
+		Class.forName(driver);
+		
+		String url = "jdbc:mariadb://centauri.proximainformatica.com:193/academyfs07";
+		
+		Connection con = DriverManager.getConnection(url, "acfs07", "acfs07");
+		
+		Statement cmd = con.createStatement();
+		String query = "select * from users where email='" + email 
+						+ "' AND password ='" + password +"';";
+		ResultSet res = cmd.executeQuery(query);
+		System.out.println("DEBUG::"+query);
+		
+		if(res.next())
+			login = true;
+		
+		return login;
+	}
+	
 	public String retriveFromDB() throws Exception{
 
 		String driver = "org.mariadb.jdbc.Driver";
@@ -30,7 +52,7 @@ public class DatabaseManagementSingleton {
 		Connection con = DriverManager.getConnection(url, "acfs07", "acfs07");
 		
 		Statement cmd = con.createStatement();
-		String query = "SELECT * FROM users_dayaimkazmi";
+		String query = "SELECT * FROM users";
 		ResultSet res = cmd.executeQuery(query);
 
 		String daRestituire ="";
@@ -39,14 +61,9 @@ public class DatabaseManagementSingleton {
 				+ "<tr> "
 				+ "<th> id </th> "
 				+ "<th> email </th> "
+				+ "<th> password </th> "
 				+ "<th> firstName </th> "
 				+ "<th> lastName </th> "
-				+ "<th> birthday </th>"
-				+ "<th> image path </th>"
-				+ "<th> role </th>"
-				+ "<th> hr note </th>"
-				+ "<th> technical note </th>"
-				+ "<th> is enabled </th>"
 				+ "</tr>";
 		
 		while (res.next()) {
@@ -69,7 +86,7 @@ public class DatabaseManagementSingleton {
 		return daRestituire;
 	}
 	
-	public int insertIntoDB(String email,String firstName,String lastName ,String birthday,String imgpath,String role,String hrnote,String technicalnote,String enabled) throws Exception{
+	public int insertIntoDB(String email, String password, String firstName,String lastName ,String dateofbirth) throws Exception{
 
 
 		String driver = "org.mariadb.jdbc.Driver";
@@ -80,16 +97,12 @@ public class DatabaseManagementSingleton {
 		Connection con = DriverManager.getConnection(url, "acfs07", "acfs07");
 		
 		Statement cmd = con.createStatement();
-		String query = "INSERT INTO users_dayaimkazmi(email, firstname, lastname , birthday, imgpath, role, hrnote, technicalnote, enabled) values"
+		String query = "INSERT INTO users(email, password, firstname, lastname , dateofbirth) values"
 				+ "('" + email + "'," 
+				+ "'" + password + "',"
 				+ "'" + firstName + "',"
 				+ "'" + lastName + "'," 
-				+ "'" + birthday + "'," 
-				+ "'" + imgpath + "'," 
-				+ "'" + role + "'," 
-				+ "'" + hrnote + "'," 
-				+ "'" + technicalnote + "'," 
-				+ "'" + enabled 
+				+ "'" + dateofbirth + "',"
 				+ "');";
 		
 		int rowsUpdated = cmd.executeUpdate(query);
@@ -106,7 +119,7 @@ public class DatabaseManagementSingleton {
 		Connection con = DriverManager.getConnection(url, "acfs07", "acfs07");
 		
 		Statement cmd = con.createStatement();
-		String query = "DELETE FROM users_dayaimkazmi WHERE id = " + "'" + id + "';";
+		String query = "DELETE FROM users WHERE id = " + "'" + id + "';";
 		
 		cmd.executeUpdate(query);
 

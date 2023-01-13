@@ -26,7 +26,28 @@ public class LoginServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		response.getWriter().append("Bella");
+		String email = request.getParameter("email");
+		String password = request.getParameter("password");
+		
+		System.out.println("Email: " + email + " Password: " + password);
+		boolean login = false;
+		
+		try {
+			login = DatabaseManagementSingleton.getIstance().login(email, password);
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		if(login == true) {
+			request.getRequestDispatcher("./account.html").forward(request, response);
+		}
+		else {
+			response.getWriter().append("<html><body> <h2>Email or password are incorrect<h2>");
+			response.getWriter().append("<a href=\"login.html\"> try again </a> ");
+		}
+		
 	}
 
 }
