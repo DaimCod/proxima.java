@@ -37,4 +37,14 @@
     <servlet-name>DeleteServlet</servlet-name>
     <url-pattern>/DeleteServlet</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <description>login</description>
+    <display-name>LoginServlet</display-name>
+    <servlet-name>LoginServlet</servlet-name>
+    <servlet-class>test.LoginServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>LoginServlet</servlet-name>
+    <url-pattern>/LoginServlet</url-pattern>
+  </servlet-mapping>
 </web-app>
