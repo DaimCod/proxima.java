@@ -1,10 +1,9 @@
-package esempio;
+package test;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
-import java.time.LocalDateTime;
 
 public class DatabaseManagementSingleton {
 
@@ -36,7 +35,7 @@ public class DatabaseManagementSingleton {
 
 		String daRestituire ="";
 		
-		daRestituire += "<form action=\"./DeleteID\"><table>"
+		daRestituire += "<table>"
 				+ "<tr> "
 				+ "<th> id </th> "
 				+ "<th> email </th> "
@@ -53,7 +52,6 @@ public class DatabaseManagementSingleton {
 		while (res.next()) {
 			
 			daRestituire += "<tr>";
-			daRestituire += "<td> <input type=\"radio\" name=\"userToDelete\" value=\""+ res.getString(1)  +"\"/> </td>";
 			daRestituire += "<td>" +(res.getString(1)) + "</td>";
 			daRestituire += "<td>" +(res.getString(2)) + "</td>";
 			daRestituire += "<td>" +(res.getString(3)) + "</td>";
@@ -66,7 +64,7 @@ public class DatabaseManagementSingleton {
 			daRestituire += "</tr>";
 		}
 		
-		daRestituire += "</table> </form>";
+		daRestituire += "</table>";
 		
 		return daRestituire;
 	}
