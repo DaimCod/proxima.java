@@ -10,12 +10,15 @@
 	String utenteLoggato = "" + session.getAttribute("userLogged");
 %>
 
+
 <html>
 	<head>
 		<meta charset="ISO-8859-1">
 		<title>List users</title>
 	</head>
 	<body>
+		
+		<h3>L'utente loggato è <% utenteLoggato %></h3>	
 		<form action="./DeleteUserServlet" method="post">
 			<table>
 				<% ArrayList<User> lista = null;
