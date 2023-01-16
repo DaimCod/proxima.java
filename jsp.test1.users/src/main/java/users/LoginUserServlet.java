@@ -44,6 +44,7 @@ public class LoginUserServlet extends HttpServlet {
 		}
 		
 		if(login == true) {
+			request.getSession().setAttribute("userLogged", email);
 			request.getRequestDispatcher("./users.jsp").forward(request, response);
 		}
 		else {
