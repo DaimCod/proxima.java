@@ -7,7 +7,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import test.TestUsersSingleton;
+import service.UserService;
 
 /**
  * Servlet implementation class RegistrationUserServlet
@@ -35,15 +35,15 @@ public class RegistrationUserServlet extends HttpServlet {
 		 String lastname  = request.getParameter("lastname");
 		 String dateofbirth = request.getParameter("birthday");
 		 
-		 int signedUp = 0;
+		 boolean signedUp = false;
 		 try {
-			signedUp = TestUsersSingleton.getIstance().signup(email,password,firstname,lastname,dateofbirth);
-			System.out.println("dopo la call al singleton");
+			signedUp = UserService.getIstance().insert(email,password,firstname,lastname,dateofbirth);
+			System.out.println("Servlet Reg " + signedUp);
 		 } catch (Exception e) {
 			e.printStackTrace();
 		}
 		 
-		 if(signedUp > 0) {
+		 if(signedUp) {
 			 response.getWriter().append("<body> <h2>Registration completed successfully. <a href=\"./login.jsp\">login HERE</a></h2>");
 			
 		 }

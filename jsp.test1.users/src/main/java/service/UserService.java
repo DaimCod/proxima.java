@@ -1,7 +1,11 @@
 package service;
 
 import java.io.IOException;
+import java.sql.Connection;
 import java.sql.Date;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 
@@ -40,22 +44,69 @@ public class UserService {
 		//insert into DB
 		System.out.println("insert");
 		boolean response = false;
+		
+		try {
+			
+			response = DatabaseManagerSingleton.getInstance().insertUser(userToInsert);
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
 		return response;
 	}
 	
+	public boolean insert(String email, String password, String firstname, String lastname, String dateofbirth) throws Exception {
+		
+		Timestamp regdate = new Timestamp(new Date(0).getTime());
+		Integer role = 10;
+		String image = "image";
+		String note = "nota di servizio";
+		boolean enabled = false;
+		
+		User user = new User();
+		user.setEmail(email);
+		user.setPassword(password);
+		user.setFirstname(firstname);
+		user.setLastname(lastname);
+		user.setDateofbirth(Date.valueOf("2023-01-17"));
+		user.setRegdate(regdate);
+		user.setRole(role);
+		user.setImgpath(image);
+		user.setNote(note);
+		user.setEnabled(enabled);
+		
+		System.out.println("ora chiamo l'altro insert");
+		return insert(user);
+		
+	}
+	
 	public ArrayList<User> selectAllUsers(){
-		ArrayList<User> lista = new ArrayList<User>();
 		
-		Date dateofbirth = Date.valueOf("2000-01-03");
-		Timestamp sqlTimestamp = new Timestamp(new Date(0).getTime());
+		ArrayList<User> lista = null;
 		
-		User utente = new User(1,"a@b.c", "aaa", "d", "s", dateofbirth, sqlTimestamp, 1, "image", "note", true);
-		
-		User utente1 = new User(2,"a@d.d", "aaa", "da", "sh", dateofbirth, sqlTimestamp, 1, "image", "note", true);
-		
-		lista.add(utente);
-		lista.add(utente1);
+		try {
+			lista = DatabaseManagerSingleton.getInstance().getUsers();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		return lista;
+	}
+
+	public boolean deleteUser(int id) {
+		
+		boolean response = false;
+		
+		try {
+			
+			response = DatabaseManagerSingleton.getInstance().deleteUserById(id);
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		return response;
 	}
 }

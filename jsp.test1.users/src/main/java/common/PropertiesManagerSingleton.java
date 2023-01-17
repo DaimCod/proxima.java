@@ -23,7 +23,7 @@ public class PropertiesManagerSingleton {
 	private PropertiesManagerSingleton() throws IOException {
 		p = new java.util.Properties();
         p.load(Thread.currentThread().getContextClassLoader().getResourceAsStream(DEFAULT_PROPERTIES_FILE));
-		System.out.println("Istanziato costruttore privato....");
+		
 	}
 
 	public static PropertiesManagerSingleton getInstance() throws IOException {
@@ -35,10 +35,10 @@ public class PropertiesManagerSingleton {
 	}
 	
 	public String getProperty (String key) {
-		System.out.println("Sto chiedendo il valore della chiave: " + key);
+		
 		String value = "" ;
 		value = p.getProperty(key);
-		System.out.println("Sto chiedendo il valore: " + value);
+		
 		return value ;
 	}
 

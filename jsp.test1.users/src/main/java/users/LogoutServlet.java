@@ -5,21 +5,19 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import service.UserService;
-
 import java.io.IOException;
 
 /**
- * Servlet implementation class DeleteUserServlet
+ * Servlet implementation class LogoutServlet
  */
-@WebServlet("/DeleteUserServlet")
-public class DeleteUserServlet extends HttpServlet {
+@WebServlet("/LogoutServlet")
+public class LogoutServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public DeleteUserServlet() {
+    public LogoutServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -28,13 +26,11 @@ public class DeleteUserServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+		request.getSession().invalidate();
+		request.setAttribute("message",	"Logged out successfully");
+		request.getRequestDispatcher("/login.jsp").forward(request, response);
 		
-		int idToCancel = Integer.parseInt(request.getParameter("selectedUserId"));
-		boolean risposta = UserService.getIstance().deleteUser(idToCancel);
-		
-		if(risposta) {
-			response.getWriter().append("<body> <h1>User deleted <a href=\"users.jsp\">click here to go back</a><h1>");
-		}
 	}
 
 	/**

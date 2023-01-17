@@ -1,24 +1,19 @@
 <%@page import="service.UserService"%>
-<%@page import="test.TestUsersSingleton"%>
 <%@page import="pojo.User"%>
 <%@page import="java.util.ArrayList"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
+
 <!DOCTYPE html>
-
-<%
-	String utenteLoggato = "" + session.getAttribute("userLogged");
-%>
-
-
+<%@include file="authentication.jsp" %>
+<%@include file="header.jsp" %>
+ 
 <html>
 	<head>
-		<meta charset="ISO-8859-1">
+		<meta charset="UTF-8">
 		<title>List users</title>
 	</head>
 	<body>
-		
-		<h3>L'utente loggato è <% utenteLoggato %></h3>	
 		<form action="./DeleteUserServlet" method="post">
 			<table>
 				<% ArrayList<User> lista = null;
